@@ -1,0 +1,20 @@
+{
+  "name": "cli_reading_tracker",
+  "version": "1.0.0",
+  "description": "CLI Tool to Track Books",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reburke286/cli_reading_tracker.git"
+  },
+  "author": "Rebecca Burke",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/reburke286/cli_reading_tracker/issues"
+  },
+  "homepage": "https://github.com/reburke286/cli_reading_tracker#readme"
+}
