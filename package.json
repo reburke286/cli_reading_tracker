@@ -4,7 +4,7 @@
   "description": "CLI Tool to Track Books",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "node index.js",
     "test": "npm test"
   },
   "repository": {
@@ -18,9 +18,12 @@
   },
   "homepage": "https://github.com/reburke286/cli_reading_tracker#readme",
   "dependencies": {
+    "axios": "^1.7.7",
+    "dotenv": "^16.4.5",
     "express": "^4.17.1",
     "inquirer": "^7.0.1",
     "mongoose": "^7.0.2",
+    "node-fetch": "^2.7.0",
     "nodemon": "^3.1.7"
   }
 }
