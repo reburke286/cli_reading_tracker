@@ -1,5 +1,11 @@
 const inquirer = require("inquirer");
-const { saveAuthor, fetchAuthor } = require("./routes/index");
+const { genreChoices } = require("./utils/constants");
+const { saveAuthor, fetchAuthor, saveBook } = require("./routes/index");
+const dayjs = require("dayjs");
+//import dayjs from 'dayjs' // ES 2015
+dayjs().format();
+const customParseFormat = require("dayjs/plugin/customParseFormat");
+dayjs.extend(customParseFormat);
 
 async function init() {
   const info = await inquirer.prompt([
@@ -15,14 +21,14 @@ async function init() {
     case "See my dashboard":
       return console.log("go to the frontend :)");
     case "Add a book":
-      return addBook();
+      return addNewBook();
     default:
       console.log("Latersss");
       process.exit();
   }
 }
 
-async function addBook() {
+async function addNewBook() {
   const bookInfo = await inquirer.prompt([
     {
       type: "input",
@@ -35,28 +41,45 @@ async function addBook() {
       message: "Book Author(s)",
     },
     {
-      type: "input",
+      type: "checkbox",
       name: "genre",
       message: "Book Genre",
-      //turn into checkbox?
+      choices: genreChoices,
     },
     {
       type: "input",
       name: "yearPublished",
       message: "Year of Publication",
-      //validate to 4 numbers
+      validate: (year) => {
+        if (typeof year !== "number" && isNaN(year)) {
+          return "Please enter a number";
+        } else if (Number(year) < 1000 || Number(year) > 9999) {
+          return "Please format your year as YYYY";
+        }
+        return true;
+      },
     },
     {
       type: "input",
       name: "dateStarted",
-      message: "Date Started",
-      //validate to date format
+      message: "Date Started (YYYY-MM-DD)",
+      validate: (date) => {
+        if (isNaN(dayjs(date, "YYYY-MM-DD").$d)) {
+          return "Date should be formatted as YYYY-MM-DD";
+        } // strict parsing)
+        return true;
+      },
     },
     {
       type: "input",
-      name: "dateEnded",
-      message: "Date Ended",
-      //validate to date format
+      name: "dateFinished",
+      message: "Date Finished (YYYY-MM-DD)",
+      validate: (date) => {
+        if (isNaN(dayjs(date, "YYYY-MM-DD").$d)) {
+          return "Date should be formatted as YYYY-MM-DD";
+        } // strict parsing)
+        return true;
+      },
     },
     {
       type: "list",
@@ -108,7 +131,7 @@ async function addBook() {
       choices: ["Physical Book", "E-Book", "Audiobook", "Library Book"],
     },
     {
-      type: "checkbox",
+      type: "list",
       name: "isReread",
       message: "Reread",
       choices: [
@@ -126,24 +149,32 @@ async function addBook() {
       type: "input",
       name: "pageCount",
       message: "Page Count",
-      //validate min/max
-      //validate number
+      validate: (page) => {
+        if (typeof page !== "number" && isNaN(page)) {
+          return "Please enter a number";
+        } else if (Number(page) < 0 || Number(page) > 999999) {
+          return "Please enter a number -- a believable one";
+        }
+        return true;
+      },
     },
   ]);
 
-  console.log(`Thanks for adding ${bookInfo.title}. I hope you liked it!`);
-  const author = await checkForAuthor(bookInfo.author);
-  if (!author) {
-    addAuthor(bookInfo.author);
-  } else {
-    console.log("gonna create a book entry now");
-    //createBook
-  }
+  //console.log(`Thanks for adding ${bookInfo.title}. I hope you liked it!`);
+  console.log(bookInfo);
+  // const author = await checkForAuthor(bookInfo.author);
+  // if (!author) {
+  //   await createNewAuthor(bookInfo.author);
+  // } else {
+  //   console.log(`gonna create a book entry now with ${JSON.stringify(author)}`);
+  //   console.log(JSON.stringify({ ...bookInfo, authorId: author._id }));
+  //   await createNewbook(bookInfo, author._id);
+  // }
   //if authorId, then createBook
   // init();
 }
 
-async function addAuthor(authorName) {
+async function createNewAuthor(authorName) {
   console.log(
     `Looks like we don't have an entry in our database for ${authorName} yet.`
   );
@@ -169,5 +200,9 @@ async function checkForAuthor(name) {
   } else {
     return false;
   }
+}
+
+async function createNewbook(book, authorId) {
+  await saveBook({ ...book, authorId });
 }
 module.exports = init;

@@ -16,9 +16,11 @@ const bookSchema = new Schema(
       type: Schema.Types.ObjectId,
       required: true,
     },
-    genre: {
-      type: String,
-    },
+    genre: [
+      {
+        type: String,
+      },
+    ],
     yearPublished: {
       type: Number,
       min: 1000,

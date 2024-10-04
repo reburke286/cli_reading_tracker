@@ -1,0 +1,23 @@
+module.exports = {
+  genreChoices: [
+    { name: "Fiction", value: "Fiction" },
+    { name: "Non-Fiction", value: "Non-Fiction" },
+    { name: "SciFi", value: "SciFi" },
+    { name: "Mystery", value: "Mystery" },
+    { name: "YA", value: "YA" },
+    { name: "Fantasy", value: "Fantasy" },
+    { name: "Thriller", value: "Thriller" },
+    { name: "Horror", value: "Horror" },
+    { name: "Biography/Memoir", value: "Biography/Memoir" },
+    { name: "Romance", value: "Romance" },
+    { name: "Short Stories", value: "Short Stories" },
+    { name: "Self-Help", value: "Self-Help" },
+    { name: "Graphic Novel", value: "Graphic Novel" },
+    { name: "Humor/Comedy", value: "Humor/Comedy" },
+    { name: "Poetry", value: "Poetry" },
+    { name: "Essay", value: "Essay" },
+    { name: "Politics/Current Affairs", value: "Politics/Current Affairs" },
+    { name: "Science", value: "Science" },
+    { name: "Children's/Middle Reader", value: "Children's/Middle Reader" },
+  ],
+};

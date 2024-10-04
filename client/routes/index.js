@@ -40,30 +40,20 @@ module.exports = {
       },
     }).then((resp) => resp.json());
   },
-  fetchBooks() {
-    fetch(`/api/books`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-  },
-  fetchBook(id) {
-    fetch(`/api/books/${id}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-  },
-  saveBook(book) {
-    fetch("/api/books", {
+  async saveBook(body) {
+    await fetch(`${process.env.LOCAL_URL}/api/books`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "content-type": "application/json",
       },
-      body: book,
-    });
+      body: JSON.stringify(body),
+    }).then((resp) => resp.json());
+  },
+  async fetchBook(id) {
+    let book = await fetch(`${process.env.LOCAL_URL}/api/books/${id}`).then(
+      (resp) => resp.json()
+    );
+    return book;
   },
   updateBook(book) {
     fetch(`/api/books/${book.id}`, {
