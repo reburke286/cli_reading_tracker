@@ -12,7 +12,6 @@ const authorController = {
     }
   },
   async getAuthor(req, res) {
-    console.log(req.params)
     try {
       const author = await Author.findOne({ name: req.params.authorId });
 

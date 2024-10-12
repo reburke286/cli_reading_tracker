@@ -1,8 +1,7 @@
 const inquirer = require("inquirer");
-const { genreChoices } = require("./utils/constants");
-const { saveAuthor, fetchAuthor, saveBook } = require("./routes/index");
+const { genreChoices } = require("../utils/constants");
+const { saveAuthor, fetchAuthor, saveBook } = require("../routes/index");
 const dayjs = require("dayjs");
-//import dayjs from 'dayjs' // ES 2015
 dayjs().format();
 const customParseFormat = require("dayjs/plugin/customParseFormat");
 dayjs.extend(customParseFormat);
@@ -160,25 +159,25 @@ async function addNewBook() {
     },
   ]);
 
-  //console.log(`Thanks for adding ${bookInfo.title}. I hope you liked it!`);
-  console.log(bookInfo);
-  // const author = await checkForAuthor(bookInfo.author);
-  // if (!author) {
-  //   await createNewAuthor(bookInfo.author);
-  // } else {
-  //   console.log(`gonna create a book entry now with ${JSON.stringify(author)}`);
-  //   console.log(JSON.stringify({ ...bookInfo, authorId: author._id }));
-  //   await createNewbook(bookInfo, author._id);
-  // }
-  //if authorId, then createBook
-  // init();
+  console.log(`Thanks for adding ${bookInfo.title}. I hope you liked it!
+    \n`);
+  let author = await checkForAuthor(bookInfo.author);
+  while (!author) {
+    author = await createNewAuthor(bookInfo.author);
+  }
+
+  console.log(`Alright we've got ${author.name} added to the database, which means ${bookInfo.title} is in there too!
+              \n Good for you!`);
+  await createNewbook(bookInfo, author._id);
+
+  init();
 }
 
 async function createNewAuthor(authorName) {
   console.log(
-    `Looks like we don't have an entry in our database for ${authorName} yet.`
+    `Looks like we don't have an entry in our database for ${authorName} yet.
+    \n Let's create it now.`
   );
-  console.log("Let's create it now");
   const authorInfo = await inquirer.prompt([
     {
       type: "list",
@@ -191,6 +190,8 @@ async function createNewAuthor(authorName) {
   ]);
 
   await saveAuthor({ name: authorName, ...authorInfo });
+  const author = await checkForAuthor(authorName);
+  return author;
 }
 
 async function checkForAuthor(name) {
