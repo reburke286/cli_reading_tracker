@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 import App from "./App";
 import Landing from './pages/Landing'
+import Charts from './pages/Charts'
 import "./index.css";
 
 const router = createBrowserRouter([
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Landing />,
+      },
+      {
+        path: "/charts",
+        element: <Charts />,
       },
     ],
   },

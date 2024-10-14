@@ -1,30 +1,37 @@
 const inquirer = require("inquirer");
-const { genreChoices } = require("../utils/constants");
-const { saveAuthor, fetchAuthor, saveBook } = require("../routes/index");
+const { genreChoices } = require("../../client/utils/constants");
 const dayjs = require("dayjs");
 dayjs().format();
 const customParseFormat = require("dayjs/plugin/customParseFormat");
 dayjs.extend(customParseFormat);
+const fetch = require('node-fetch')
 
-async function init() {
-  const info = await inquirer.prompt([
-    {
-      type: "list",
-      name: "start",
-      message: "What would you like to do?",
-      choices: ["See my dashboard", "Add a book", "Leave"],
-    },
-  ]);
-
-  switch (info.start) {
-    case "See my dashboard":
-      return console.log("go to the frontend :)");
-    case "Add a book":
-      return addNewBook();
-    default:
-      console.log("Latersss");
-      process.exit();
-  }
+function init() {
+  inquirer
+    .prompt([
+      {
+        type: "list",
+        name: "start",
+        message: "What would you like to do?",
+        choices: ["See my dashboard", "Add a book", "Leave"],
+      },
+    ])
+    .then((info) => {
+      switch (info.start) {
+        case "See my dashboard":
+          console.log(`k. go there yourself. jeez. http://localhost:5173/`);
+          setTimeout(function () {
+            init();
+          }, 4000);
+          break;
+        case "Add a book":
+          addNewBook();
+          break;
+        default:
+          console.log("Latersss");
+          process.exit();
+      }
+    });
 }
 
 async function addNewBook() {
@@ -189,13 +196,16 @@ async function createNewAuthor(authorName) {
     { type: "input", name: "nationality", message: "Author Nationality" },
   ]);
 
-  await saveAuthor({ name: authorName, ...authorInfo });
+  await methodMadness("POST", "api/authors", {
+    name: authorName,
+    ...authorInfo,
+  });
   const author = await checkForAuthor(authorName);
   return author;
 }
 
 async function checkForAuthor(name) {
-  const author = await fetchAuthor(name);
+  const author = await methodMadness("GET", `api/authors/${name}`);
   if (author) {
     return author;
   } else {
@@ -204,6 +214,36 @@ async function checkForAuthor(name) {
 }
 
 async function createNewbook(book, authorId) {
-  await saveBook({ ...book, authorId });
+  await methodMadness("POST", "api/books", { ...book, authorId });
 }
+
 module.exports = init;
+
+async function methodMadness(method, path, body) {
+  let headers = {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+    Origin: "http://localhost:3001",
+  };
+
+  const url = path ? `http://localhost:3001/${path}` : `http://localhost:3001/`;
+
+  const options = {
+    mode: "cors",
+    credentials: "include",
+    method,
+    headers
+  };
+
+  if (body) {
+    options["body"] = JSON.stringify(body);
+  }
+  try {
+    const response = await fetch(url, options);
+    const formatted = await response.json();
+    const data = await formatted;
+    return data;
+  } catch (err) {
+    console.log(err.message);
+  }
+}

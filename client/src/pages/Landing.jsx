@@ -35,7 +35,7 @@ const formatBookData = (data) => {
   return data
     .map((d) => ({
       ...d,
-      id: d.title,
+      id: d._id,
       genre: d.genre.toString(),
     }))
     .sort((a, b) => new Date(a.dateStarted) - new Date(b.dateStarted));
@@ -58,7 +58,7 @@ export default function Landing() {
 
   return (
     <Stack spacing={3} sx={{ width: "100%" }}>
-      <Box sx={{ maxWidth: "1200px" }} p={3}>
+      <Box sx={{ maxWidth: "1200px", maxHeight: '800px'}} p={3}>
         {books.length > 0 && (
           <StripedDataGrid
             getRowClassName={(params) =>
@@ -66,6 +66,7 @@ export default function Landing() {
             }
             rows={books}
             columns={columns}
+            pageSizeOptions={[10, 25, 50, 100]}
           />
         )}
       </Box>
