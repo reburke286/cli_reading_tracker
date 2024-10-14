@@ -4,7 +4,7 @@
   "description": "CLI Tool to Track Books",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node server.js",
     "test": "npm test"
   },
   "repository": {
@@ -25,7 +25,6 @@
     "express": "^4.17.1",
     "inquirer": "^7.0.1",
     "mongoose": "^7.0.2",
-    "node-fetch": "^2.7.0",
-    "nodemon": "^3.1.7"
+    "node-fetch": "^2.7.0"
   }
 }
