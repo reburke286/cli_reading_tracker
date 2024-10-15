@@ -1,9 +1,12 @@
-const { Book } = require("../models");
+const { Book, Author } = require("../models");
 
 const bookController = {
   async getBooks(req, res) {
     try {
-      const books = await Book.find();
+      const books = await Book.find().populate({
+        path: "authorId",
+        model: Author,
+      });
       if (books.length > 0) {
         res.json(books);
       } else {
@@ -16,7 +19,11 @@ const bookController = {
   },
   async getBook(req, res) {
     try {
-      const book = await Book.findOne({ _id: req.params.bookId });
+      const book = await Book.findOne({ _id: req.params.bookId }).populate({
+        path: "authorId",
+        model: Author,
+      });
+
       if (!book) {
         return res.status(404).json({
           message:
@@ -34,6 +41,22 @@ const bookController = {
     try {
       const newBook = await Book.create(req.body);
       res.json(newBook);
+    } catch (err) {
+      console.log(err);
+      res.status(500).json(err);
+    }
+  },
+  async updateBook(req, res) {
+    try {
+      const updatedBook = await Book.findOneAndUpdate(
+        { _id: req.params.bookId },
+        { $set: req.body },
+        { runValidators: true, new: true }
+      );
+      if (!updatedBook) {
+        res.status(404).json({ message: "No book found with that id" });
+      }
+      res.json(updatedBook);
     } catch (err) {
       console.log(err);
       res.status(500).json(err);

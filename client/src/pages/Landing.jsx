@@ -1,8 +1,7 @@
-import { DataGrid } from "@mui/x-data-grid";
 import { Stack, Box } from "@mui/material";
 import { useState, useEffect } from "react";
-import { methodMadness } from "../../routes/fetch";
-import { StripedDataGrid } from "../components/StyledDataGrid";
+import { methodMadness } from "../../routes";
+import { StripedDataGrid } from "../components/Table.jsx/StyledDataGrid";
 import dayjs from "dayjs";
 dayjs().format();
 

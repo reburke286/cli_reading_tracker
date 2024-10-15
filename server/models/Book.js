@@ -46,7 +46,7 @@ const bookSchema = new Schema(
     },
     readingFormat: {
       type: String,
-    },
+    }
   },
   {
     toJSON: {
