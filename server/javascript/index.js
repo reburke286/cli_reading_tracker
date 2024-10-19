@@ -1,5 +1,5 @@
 const inquirer = require("inquirer");
-const { genreChoices } = require("../../client/utils/constants");
+const { genreChoices } = require("../utils/constants");
 const dayjs = require("dayjs");
 dayjs().format();
 const customParseFormat = require("dayjs/plugin/customParseFormat");
