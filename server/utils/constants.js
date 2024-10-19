@@ -19,5 +19,9 @@ module.exports = {
     { name: "Politics/Current Affairs", value: "Politics/Current Affairs" },
     { name: "Science", value: "Science" },
     { name: "Children's/Middle Reader", value: "Children's/Middle Reader" },
+    { name: "Historical Fiction", value: "Historical Fiction" },
+    { name: "Mythology", value: "Mythology" },
+    { name: "Biography", value: "Biography" },
+    { name: "Health", value: "Health" },
   ],
 };

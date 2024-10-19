@@ -1,4 +1,5 @@
 const { Book, Author } = require("../models");
+const _ = require("lodash");
 
 const bookController = {
   async getBooks(req, res) {
@@ -38,9 +39,49 @@ const bookController = {
   },
   async createBook(req, res) {
     //need to get the author
+    let payload = {
+      title: req.body.title,
+      author: req.body.author,
+      genre: req.body.genre,
+      yearPublished: req.body.yearPublished,
+      readingDates: [
+        {
+          dateStarted: req.body.dateStarted,
+          dateFinished: req.body.dateFinished,
+        },
+      ],
+      rating: req.body.rating,
+      reread: req.body.reread,
+      readingFormat: req.body.readingFormat,
+      pageCount: req.body.pageCount,
+    };
     try {
-      const newBook = await Book.create(req.body);
-      res.json(newBook);
+      const { _id } = await Author.findOne({ name: req.body.author });
+      if (!_id) {
+        json.status(500).json({
+          message: "No author found for this book. Create author first.",
+        });
+      }
+      payload = { ...payload, authorId: _id };
+      //console.log(payload);
+      //first check if it's been read before
+      if (req.body.reread) {
+        const book = await Book.findOne({ title: req.body.title });
+        // console.log(book);
+        if (book) {
+          const updatedBook = await Book.findOneAndUpdate(
+            { _id: book._id },
+            { $push: { readingDates: payload.readingDates } }
+          );
+          res.json(updatedBook);
+        } else {
+          const newBook = await Book.create(payload);
+          res.json(newBook);
+        }
+      } else {
+        const newBook = await Book.create(payload);
+        res.json(newBook);
+      }
     } catch (err) {
       console.log(err);
       res.status(500).json(err);
@@ -57,6 +98,21 @@ const bookController = {
         res.status(404).json({ message: "No book found with that id" });
       }
       res.json(updatedBook);
+    } catch (err) {
+      console.log(err);
+      res.status(500).json(err);
+    }
+  },
+  async deleteBook(req, res) {
+    try {
+      const deletedBook = await Book.findOneAndDelete({
+        _id: req.params.bookId,
+      });
+
+      if (!deletedBook) {
+        return res.status(404).json({ message: "No book with this id!" });
+      }
+      res.json({ message: "Book deleted" });
     } catch (err) {
       console.log(err);
       res.status(500).json(err);

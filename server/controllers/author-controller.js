@@ -22,10 +22,14 @@ const authorController = {
     }
   },
   async createAuthor(req, res) {
-    //need to get the author
     try {
-      const newAuthor = await Author.create(req.body);
-      res.json(newAuthor);
+      const author = await Author.findOne({ name: req.body.name });
+      if (author.name === req.body.name) {
+        res.json({ message: `This author already exists. Their id is ${author._id}` });
+      } else {
+        const newAuthor = await Author.create(req.body);
+        res.json(newAuthor);
+      }
     } catch (err) {
       console.log(err);
       res.status(500).json(err);

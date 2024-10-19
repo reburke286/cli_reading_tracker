@@ -1,3 +1,21 @@
+import {
+  red,
+  pink,
+  purple,
+  deepPurple,
+  indigo,
+  blue,
+  lightBlue,
+  green,
+  lightGreen,
+  cyan,
+  teal,
+  lime,
+  yellow,
+  orange,
+  amber,
+} from "@mui/material/colors";
+
 export const monthNames = [
   "Jan",
   "Feb",
@@ -12,3 +30,20 @@ export const monthNames = [
   "Nov",
   "Dec",
 ];
+
+export const colors = {
+  red: red[600],
+  pink: pink[600],
+  purple: purple[600],
+  deepPurple: deepPurple[600],
+  indigo: indigo[600],
+  blue: blue[600],
+  lightBlue: lightBlue[600],
+  cyan: cyan[600],
+  teal: teal[600],
+  green: green[600],
+  lime: lime[600],
+  lightGreen: lightGreen[600],
+  orange: orange[600],
+  amber: amber[600],
+};

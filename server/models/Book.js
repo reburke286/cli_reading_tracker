@@ -26,13 +26,12 @@ const bookSchema = new Schema(
       min: 1000,
       max: 9999,
     },
-    dateStarted: {
-      type: Date,
-      default: Date.now,
-    },
-    dateFinished: {
-      type: Date,
-    },
+    readingDates: [
+      {
+        dateStarted: Date,
+        dateFinished: Date,
+      },
+    ],
     pageCount: {
       type: Number,
     },
@@ -46,7 +45,7 @@ const bookSchema = new Schema(
     },
     readingFormat: {
       type: String,
-    }
+    },
   },
   {
     toJSON: {
