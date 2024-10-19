@@ -35,6 +35,37 @@ const authorController = {
       res.status(500).json(err);
     }
   },
+  async updateAuthor(req, res) {
+    try {
+      const updatedAuthor = await Author.findOneAndUpdate(
+        { _id: req.params.authorId },
+        { $set: req.body },
+        { runValidators: true, new: true }
+      );
+      if (!updatedAuthor) {
+        res.status(404).json({ message: "No author found with that id" });
+      }
+      res.json(updatedAuthor);
+    } catch (err) {
+      console.log(err);
+      res.status(500).json(err);
+    }
+  },
+  async deleteAuthor(req, res) {
+    try {
+      const deletedAuthor = await Author.findOneAndDelete({
+        _id: req.params.authorId,
+      });
+
+      if (!deletedAuthor) {
+        return res.status(404).json({ message: "No author with this id!" });
+      }
+      res.json({ message: "Author deleted" });
+    } catch (err) {
+      console.log(err);
+      res.status(500).json(err);
+    }
+  },
 };
 
 module.exports = authorController;

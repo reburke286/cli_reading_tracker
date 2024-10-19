@@ -63,11 +63,9 @@ const bookController = {
         });
       }
       payload = { ...payload, authorId: _id };
-      //console.log(payload);
       //first check if it's been read before
       if (req.body.reread) {
         const book = await Book.findOne({ title: req.body.title });
-        // console.log(book);
         if (book) {
           const updatedBook = await Book.findOneAndUpdate(
             { _id: book._id },
