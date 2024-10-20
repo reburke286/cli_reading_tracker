@@ -19,7 +19,7 @@ const authorSeeds = [
   },
   {
     name: "Bessel Van Der Kolk",
-    gender: "Male",
+    gender: "Man",
     race: "White",
     nationality: "Dutch",
   },
@@ -518,7 +518,7 @@ const authorSeeds = [
   },
   {
     name: "Frank Abe",
-    gender: "Male",
+    gender: "Man",
     race: "Asian",
     nationality: "Japanese",
   },
