@@ -53,6 +53,7 @@ export default function BooksByYear() {
             >
               {years.map((y) => (
                 <Button
+                  key={y}
                   sx={{
                     margin: "10px",
                     width: "50%",
@@ -69,13 +70,7 @@ export default function BooksByYear() {
             </Box>
           </Box>
           <Box mb={4}>
-            <Typography
-              variant="h4"
-              sx={{ color: purple[800], margin: "0px 0px 20px 20px" }}
-            >
-              Page Count Per Month
-            </Typography>
-            <LineGraph data={pageCountPerMonth(chartData)} />
+            <LineGraph data={chartData} />
           </Box>
           <Box>
             <PieGraph data={chartData} />
