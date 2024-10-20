@@ -8,17 +8,11 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { colors } from "../../../utils/constants";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { booksReadByAuthorType, booksByGenre } from "../../../utils/helpers";
 import { useEffect, useState, useCallback } from "react";
-import { StyledButton } from "../../Table/StyledDataGrid";
-
-const buttonStyle = {
-  border: "none",
-  "&:active": {
-    border: "none",
-  },
-};
+import { purple } from "@mui/material/colors";
+import _ from "lodash";
 
 export default function PieGraph({ data }) {
   const [authorType, setAuthorType] = useState("gender");
@@ -26,15 +20,12 @@ export default function PieGraph({ data }) {
   const [formattedData, setFormattedData] = useState([]);
 
   useEffect(() => {
-    setIsGenre(false);
-    setFormattedData(booksReadByAuthorType(data, authorType));
-  }, [authorType]);
-
-  useEffect(() => {
-    if (isGenre) {
+    if (!isGenre) {
+      setFormattedData(booksReadByAuthorType(data, authorType));
+    } else {
       setFormattedData(booksByGenre(data, false));
     }
-  }, [isGenre]);
+  }, [authorType, isGenre]);
 
   const COLORS = [
     colors.purple,
@@ -54,43 +45,52 @@ export default function PieGraph({ data }) {
   ];
 
   const RADIAN = Math.PI / 180;
-  const renderCustomizedLabel = ({
-    cx,
-    cy,
-    midAngle,
-    innerRadius,
-    outerRadius,
-    percent,
-    index,
-  }) => {
-    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-    const x = cx + radius * Math.cos(-midAngle * RADIAN);
-    const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-    return (
-      <text x={x} y={y} fill="black" textAnchor={""}>
-        {`${(percent * 100).toFixed(0)}%`}
-      </text>
-    );
-  };
   const renderLabel = useCallback((piePiece) => {
     return `${piePiece.percentage}%`;
   }, []);
   return (
-    <Box display="flex" flexDirection={"column"} sx={{ width: "50%", height: '1000px' }}>
+    <Box
+      display="flex"
+      flexDirection={"column"}
+      sx={{ width: "50%", height: "1000px" }}
+    >
+      <Typography
+        variant="h4"
+        sx={{ color: purple[800], margin: "0px 0px 20px 20px" }}
+      >
+        {`Books by ${isGenre ? "Genre" : `Author ${_.capitalize(authorType)}`}`}
+      </Typography>
       <Box
         sx={{
           display: "flex",
-          justifyContent: "space-around"
+          justifyContent: "space-around",
         }}
       >
-        <Button variant="contained" onClick={() => setAuthorType("gender")}>
+        <Button
+          variant="contained"
+          onClick={() => {
+            setIsGenre(false);
+            setAuthorType("gender");
+          }}
+        >
           By Gender
         </Button>
-        <Button variant="contained" onClick={() => setAuthorType("nationality")}>
+        <Button
+          variant="contained"
+          onClick={() => {
+            setIsGenre(false);
+            setAuthorType("nationality");
+          }}
+        >
           By Nationality
         </Button>
-        <Button variant="contained" onClick={() => setAuthorType("race")}>
+        <Button
+          variant="contained"
+          onClick={() => {
+            setIsGenre(false);
+            setAuthorType("race");
+          }}
+        >
           By Race
         </Button>
         <Button variant="contained" onClick={() => setIsGenre(true)}>
@@ -125,7 +125,7 @@ export default function PieGraph({ data }) {
                 id: item.name,
                 type: "square",
                 value: `${item.name} (${item.percentage}%)`,
-                color: COLORS[index % COLORS.length]
+                color: COLORS[index % COLORS.length],
               };
             })}
           />
