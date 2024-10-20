@@ -56,8 +56,20 @@ export const pageCountPerMonth = (data) => {
   );
 };
 
+export const booksPerMonth = (data) => {
+  const finishedBooks = listOfFinishedBooks(data);
+  const groupedByMonth = _.groupBy(finishedBooks, "monthFinished");
+  const graphData = [];
+  for (const key of Object.keys(groupedByMonth)) {
+    const month = groupedByMonth[key];
+    graphData.push({ name: key, "Books": month.length });
+  }
+  return graphData.sort(
+    (a, b) => monthNames.indexOf(a.name) - monthNames.indexOf(b.name)
+  );
+};
+
 export const booksReadByAuthorType = (data, authorType) => {
-  console.log(data);
   const result = {};
   data.map(({ authorId }) => {
     for (const key of Object.keys(authorId)) {
@@ -88,7 +100,6 @@ export const booksByGenre = (data) => {
   const result = {};
   data.map(({ genre }) => {
     genre.split(",").map((g) => {
-      console.log(g);
       if (g !== "") {
         if (!result[g]) {
           result[g] = 0;
