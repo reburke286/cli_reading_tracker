@@ -1,10 +1,10 @@
 import dayjs from "dayjs";
 import { monthNames } from "./constants";
 import _ from "lodash";
+import commaNumber from "comma-number";
 
-const listOfFinishedBooks = (data) => {
+export const listOfFinishedBooks = (data) => {
   let finishedBooks = [];
-  // const formattedData = formatBookData(data);
   for (let i = 0; i < data.length; i++) {
     const b = data[i];
     if (b.dateFinished && b.pageCount) {
@@ -56,13 +56,21 @@ export const pageCountPerMonth = (data) => {
   );
 };
 
+export const totalPageCount = (data) => {
+  const total = pageCountPerMonth(data).reduce(
+    (acc, curr) => acc + curr["Page Count"],
+    0
+  );
+  return commaNumber(total);
+};
+
 export const booksPerMonth = (data) => {
   const finishedBooks = listOfFinishedBooks(data);
   const groupedByMonth = _.groupBy(finishedBooks, "monthFinished");
   const graphData = [];
   for (const key of Object.keys(groupedByMonth)) {
     const month = groupedByMonth[key];
-    graphData.push({ name: key, "Books": month.length });
+    graphData.push({ name: key, Books: month.length });
   }
   return graphData.sort(
     (a, b) => monthNames.indexOf(a.name) - monthNames.indexOf(b.name)
@@ -121,6 +129,29 @@ export const booksByGenre = (data) => {
   return graphData.sort((a, b) => b.value - a.value);
 };
 
+export const booksByRating = (data) => {
+  const result = {};
+  data.map(({ rating }) => {
+    if (rating && rating > 0) {
+      if (!result[rating]) {
+        result[rating] = 0;
+      }
+      result[rating] += 1;
+    }
+  });
+  const total = sumValues(result);
+  const graphData = [];
+  for (const x of Object.keys(result)) {
+    const curr = result[x];
+    graphData.push({
+      name: x,
+      value: curr,
+      percentage: Math.round((curr / total) * 100),
+    });
+  }
+  return graphData.sort((a, b) => b.name - a.name);
+};
+
 export const formatBookData = (data) => {
   let finalBooks = [];
   data.map((d) => {
@@ -146,3 +177,31 @@ export const formatBookData = (data) => {
     (a, b) => new Date(b.dateFinished) - new Date(a.dateFinished)
   );
 };
+
+export const booksByAuthor = (data) => {
+  const result = {};
+  data.map(({ author }) => {
+    if (!result[author] & (author !== "")) {
+      result[author] = 0;
+    }
+    result[author] += 1;
+  });
+  const graphData = [];
+  for (const x of Object.keys(result)) {
+    const curr = result[x];
+    graphData.push({
+      name: x,
+      value: curr,
+      percentage: Math.round((curr / data.length) * 100),
+    });
+  }
+
+  const sorted = graphData.sort((a, b) => b.value - a.value);
+  return [sorted[0], sorted[1], sorted[2]];
+};
+
+export const bookFormatByMonth = (data) => {
+  const finishedBooks = listOfFinishedBooks(data);
+  const groupedByMonth = _.groupBy(finishedBooks, "monthFinished");
+  console.log(groupedByMonth)
+}
