@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { Stack, Box, Typography, Button } from "@mui/material";
 import LineGraph from "../components/Charts/LineGraph/LineGraph";
 import PieGraph from "../components/Charts/PieChart/PieChart";
+import Highlights from "../components/Highlights/Highlights";
+import BarGraph from "../components/Charts/BarGraph/BarGraph";
 import { pageCountPerMonth, divideByYear } from "../utils/helpers";
 import { methodMadness } from "../../routes";
 import dayjs from "dayjs";
@@ -36,7 +38,7 @@ export default function BooksByYear() {
           {year} Reading
         </Typography>
       </Stack>
-      {books && books.length > 0 && (
+      {chartData && chartData.length > 0 && (
         <Box display="flex" flexDirection={"column"} ml={4}>
           <Box display="flex">
             <Box sx={{ width: "80%" }}>
@@ -69,8 +71,16 @@ export default function BooksByYear() {
               ))}
             </Box>
           </Box>
+          <Box mb={4} display="flex">
+            <Box sx={{ width: "60%" }}>
+              <LineGraph data={chartData} />
+            </Box>
+            <Box>
+              <Highlights data={chartData} />
+            </Box>
+          </Box>
           <Box mb={4}>
-            <LineGraph data={chartData} />
+            <BarGraph data={chartData} />
           </Box>
           <Box>
             <PieGraph data={chartData} />

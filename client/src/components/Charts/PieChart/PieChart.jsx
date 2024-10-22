@@ -9,23 +9,32 @@ import {
 } from "recharts";
 import { colors } from "../../../utils/constants";
 import { Box, Button, Typography } from "@mui/material";
-import { booksReadByAuthorType, booksByGenre } from "../../../utils/helpers";
+import {
+  booksReadByAuthorType,
+  booksByGenre,
+  booksByRating,
+} from "../../../utils/helpers";
 import { useEffect, useState, useCallback } from "react";
 import { purple } from "@mui/material/colors";
 import _ from "lodash";
 
 export default function PieGraph({ data }) {
-  const [authorType, setAuthorType] = useState("gender");
-  const [isGenre, setIsGenre] = useState(false);
   const [formattedData, setFormattedData] = useState([]);
+  const [chartState, setChartState] = useState("gender");
 
   useEffect(() => {
-    if (!isGenre) {
-      setFormattedData(booksReadByAuthorType(data, authorType));
-    } else {
-      setFormattedData(booksByGenre(data, false));
+    if (
+      chartState === "gender" ||
+      chartState === "race" ||
+      chartState === "nationality"
+    ) {
+      setFormattedData(booksReadByAuthorType(data, chartState));
+    } else if (chartState === "genre") {
+      setFormattedData(booksByGenre(data));
+    } else if (chartState === "rating") {
+      setFormattedData(booksByRating(data));
     }
-  }, [authorType, isGenre]);
+  }, [chartState]);
 
   const COLORS = [
     colors.purple,
@@ -44,7 +53,6 @@ export default function PieGraph({ data }) {
     colors.lime,
   ];
 
-  const RADIAN = Math.PI / 180;
   const renderLabel = useCallback((piePiece) => {
     return `${piePiece.percentage}%`;
   }, []);
@@ -58,7 +66,7 @@ export default function PieGraph({ data }) {
         variant="h4"
         sx={{ color: purple[800], margin: "0px 0px 20px 20px" }}
       >
-        {`Books by ${isGenre ? "Genre" : `Author ${_.capitalize(authorType)}`}`}
+        {`Books by ${_.capitalize(chartState)}`}
       </Typography>
       <Box
         sx={{
@@ -66,35 +74,23 @@ export default function PieGraph({ data }) {
           justifyContent: "space-around",
         }}
       >
-        <Button
-          variant="contained"
-          onClick={() => {
-            setIsGenre(false);
-            setAuthorType("gender");
-          }}
-        >
+        <Button variant="contained" onClick={() => setChartType("gender")}>
           By Gender
         </Button>
         <Button
           variant="contained"
-          onClick={() => {
-            setIsGenre(false);
-            setAuthorType("nationality");
-          }}
+          onClick={() => setChartState("nationality")}
         >
           By Nationality
         </Button>
-        <Button
-          variant="contained"
-          onClick={() => {
-            setIsGenre(false);
-            setAuthorType("race");
-          }}
-        >
+        <Button variant="contained" onClick={() => setChartState("race")}>
           By Race
         </Button>
-        <Button variant="contained" onClick={() => setIsGenre(true)}>
+        <Button variant="contained" onClick={() => setChartState("genre")}>
           By Genre
+        </Button>
+        <Button variant="contained" onClick={() => setChartState("rating")}>
+          By Rating
         </Button>
       </Box>
       <ResponsiveContainer width="100%" height={400}>

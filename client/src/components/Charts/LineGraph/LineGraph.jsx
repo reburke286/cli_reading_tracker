@@ -38,7 +38,7 @@ export default function LineGraph({ data }) {
       <Box display="flex">
         <LineChart
           width={730}
-          height={250}
+          height={400}
           data={formattedData}
           margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
         >

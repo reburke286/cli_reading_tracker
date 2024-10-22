@@ -6,13 +6,49 @@ import {
   Tooltip,
   Legend,
   Bar,
+  Rectangle,
 } from "recharts";
 import { bookFormatByMonth } from "../../../utils/helpers";
 import { Box, Typography } from "@mui/material";
+import { useState } from "react";
+import { purple } from "@mui/material/colors";
+import { colors } from "../../../utils/constants";
+import { uniq } from "lodash";
+
+const findUniqueFormats = (data) => {
+  const uniqueKeys = new Set();
+
+  data.forEach((obj) => {
+    Object.keys(obj).forEach((key) => {
+      if (key !== "name") {
+        uniqueKeys.add(key);
+      }
+    });
+  });
+
+  return Array.from(uniqueKeys);
+};
+
+const COLORS = [
+  colors.purple,
+  colors.blue,
+  colors.teal,
+  colors.pink,
+  colors.green,
+  colors.deepPurple,
+  colors.amber,
+  colors.orange,
+  colors.red,
+  colors.indigo,
+  colors.lightBlue,
+  colors.lightGreen,
+  colors.cyan,
+  colors.lime,
+];
 
 export default function BarGraph({ data }) {
   const [graphData, setGraphData] = useState(bookFormatByMonth(data));
-  console.log(graphData);
+  const uniqueFormats = findUniqueFormats(graphData);
 
   return (
     <Box>
@@ -23,9 +59,9 @@ export default function BarGraph({ data }) {
         Reading Format by Month
       </Typography>
       <BarChart
-        width={500}
-        height={300}
-        data={data}
+        width={730}
+        height={400}
+        data={graphData}
         margin={{
           top: 5,
           right: 30,
@@ -38,16 +74,9 @@ export default function BarGraph({ data }) {
         <YAxis />
         <Tooltip />
         <Legend />
-        <Bar
-          dataKey="pv"
-          fill="#8884d8"
-          activeBar={<Rectangle fill="pink" stroke="blue" />}
-        />
-        <Bar
-          dataKey="uv"
-          fill="#82ca9d"
-          activeBar={<Rectangle fill="gold" stroke="purple" />}
-        />
+        {uniqueFormats.map((format, i) => (
+          <Bar key={i} dataKey={format} fill={COLORS[i]} />
+        ))}
       </BarChart>
     </Box>
   );

@@ -203,5 +203,19 @@ export const booksByAuthor = (data) => {
 export const bookFormatByMonth = (data) => {
   const finishedBooks = listOfFinishedBooks(data);
   const groupedByMonth = _.groupBy(finishedBooks, "monthFinished");
-  console.log(groupedByMonth)
-}
+  const graphData = [];
+  for (const key of Object.keys(groupedByMonth)) {
+    const result = {};
+    const month = groupedByMonth[key];
+    month.map(({ readingFormat }) => {
+      if (!result[readingFormat] & (readingFormat !== "")) {
+        result[readingFormat] = 0;
+      }
+      result[readingFormat] += 1;
+    });
+    graphData.push({ name: key, ...result });
+  }
+  return graphData.sort(
+    (a, b) => monthNames.indexOf(a.name) - monthNames.indexOf(b.name)
+  );
+};
