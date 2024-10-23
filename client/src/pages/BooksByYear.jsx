@@ -4,7 +4,7 @@ import LineGraph from "../components/Charts/LineGraph/LineGraph";
 import PieGraph from "../components/Charts/PieChart/PieChart";
 import Highlights from "../components/Highlights/Highlights";
 import BarGraph from "../components/Charts/BarGraph/BarGraph";
-import { pageCountPerMonth, divideByYear } from "../utils/helpers";
+import { divideByYear } from "../utils/helpers";
 import { methodMadness } from "../../routes";
 import dayjs from "dayjs";
 import { purple } from "@mui/material/colors";
@@ -20,7 +20,7 @@ export default function BooksByYear() {
     const bookData = await methodMadness("GET", "api/books");
     if (bookData) {
       setBooks(bookData);
-      setChartData(divideByYear(bookData)[year]);
+      setChartData(divideByYear(bookData)[year].sort((a, b) => dayjs(a.dateFinished) - dayjs(b.dateFinished)));
       setYears(Object.keys(divideByYear(bookData)));
     }
   }
@@ -41,7 +41,7 @@ export default function BooksByYear() {
       {chartData && chartData.length > 0 && (
         <Box display="flex" flexDirection={"column"} ml={4}>
           <Box display="flex">
-            <Box sx={{ width: "80%" }}>
+            <Box sx={{ width: "95%", marginBottom: '30px' }}>
               <TableComponent books={chartData} />
             </Box>
             <Box
@@ -63,7 +63,7 @@ export default function BooksByYear() {
                   variant="contained"
                   onClick={() => {
                     setYear(y);
-                    setChartData(divideByYear(books)[y]);
+                    setChartData(divideByYear(books)[y].sort((a, b) => dayjs(a.dateFinished) - dayjs(b.dateFinished)));
                   }}
                 >
                   {y}
@@ -92,9 +92,6 @@ export default function BooksByYear() {
 }
 
 //DNF
-//highlights
-//ratings breakdown
-//rereads
 //rating breakdown by genre
 //breakdown everything by genre
 //breakdown everything by rating

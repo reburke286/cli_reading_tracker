@@ -25,7 +25,7 @@ export default function LineGraph({ data }) {
         setFormattedData(booksPerMonth(data));
         break;
     }
-  }, [linegraphValue]);
+  }, [linegraphValue, data]);
 
   return (
     <Box>

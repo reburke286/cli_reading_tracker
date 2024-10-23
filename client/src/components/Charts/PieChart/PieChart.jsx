@@ -34,7 +34,7 @@ export default function PieGraph({ data }) {
     } else if (chartState === "rating") {
       setFormattedData(booksByRating(data));
     }
-  }, [chartState]);
+  }, [chartState, data]);
 
   const COLORS = [
     colors.purple,

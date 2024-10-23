@@ -167,7 +167,7 @@ export const formatBookData = (data) => {
         dateFinished: r.dateFinished,
         readingFormat: d.readingFormat,
         pageCount: d.pageCount,
-        reread: d.reread,
+        reread: i > 0 ? true : false,
         authorId: { ...d.authorId },
       });
     });
@@ -215,7 +215,43 @@ export const bookFormatByMonth = (data) => {
     });
     graphData.push({ name: key, ...result });
   }
+
   return graphData.sort(
     (a, b) => monthNames.indexOf(a.name) - monthNames.indexOf(b.name)
   );
+};
+
+export const rereadsPerMonth = (data) => {
+  const finishedBooks = listOfFinishedBooks(data);
+  const groupedByMonth = _.groupBy(finishedBooks, "monthFinished");
+  const graphData = [];
+  for (const key of Object.keys(groupedByMonth)) {
+    const result = {'Unique Title': 0, 'Reread': 0};
+    const month = groupedByMonth[key];
+    month.map(({ reread }) => {
+      if (reread) {
+        result['Reread'] += 1
+      } else {
+        result['Unique Title'] += 1
+      }
+    });
+    graphData.push({ name: key, ...result });
+  }
+  return graphData.sort(
+    (a, b) => monthNames.indexOf(a.name) - monthNames.indexOf(b.name)
+  );
+}
+
+export const findUniqueFormats = (data) => {
+  const uniqueKeys = new Set();
+
+  data.forEach((obj) => {
+    Object.keys(obj).forEach((key) => {
+      if (key !== "name") {
+        uniqueKeys.add(key);
+      }
+    });
+  });
+
+  return Array.from(uniqueKeys);
 };

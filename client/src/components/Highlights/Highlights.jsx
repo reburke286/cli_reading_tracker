@@ -32,3 +32,6 @@ export default function Highlights({ data }) {
     </Box>
   );
 }
+
+//Longest Read
+//Shortest Read

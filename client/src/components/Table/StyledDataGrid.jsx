@@ -61,9 +61,9 @@ export const StyledButton = styled(Button)({
 
 const columns = [
   { field: "title", headerName: "Title", flex: 2 },
-  { field: "author", headerName: "Author", flex: 1 },
+  { field: "author", headerName: "Author", flex: 2 },
   { field: "yearPublished", headerName: "Year Published", flex: 1 },
-  { field: "genre", headerName: "Genre", flex: 1 },
+  { field: "genre", headerName: "Genre", flex: 2 },
   { field: "rating", headerName: "Rating", flex: 1 },
   {
     field: "dateStarted",
@@ -86,7 +86,7 @@ const columns = [
 
 export default function TableComponent({ books }) {
   return (
-    <Box sx={{ maxWidth: "1200px", height: "600px" }} p={3}>
+    <Box sx={{ height: "600px" }} p={3}>
       {books.length > 0 && (
         <StripedDataGrid
           getRowClassName={(params) =>
