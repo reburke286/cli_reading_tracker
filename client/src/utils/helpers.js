@@ -226,13 +226,13 @@ export const rereadsPerMonth = (data) => {
   const groupedByMonth = _.groupBy(finishedBooks, "monthFinished");
   const graphData = [];
   for (const key of Object.keys(groupedByMonth)) {
-    const result = {'Unique Title': 0, 'Reread': 0};
+    const result = { "Unique Title": 0, Reread: 0 };
     const month = groupedByMonth[key];
     month.map(({ reread }) => {
       if (reread) {
-        result['Reread'] += 1
+        result["Reread"] += 1;
       } else {
-        result['Unique Title'] += 1
+        result["Unique Title"] += 1;
       }
     });
     graphData.push({ name: key, ...result });
@@ -240,7 +240,7 @@ export const rereadsPerMonth = (data) => {
   return graphData.sort(
     (a, b) => monthNames.indexOf(a.name) - monthNames.indexOf(b.name)
   );
-}
+};
 
 export const findUniqueFormats = (data) => {
   const uniqueKeys = new Set();
@@ -255,3 +255,20 @@ export const findUniqueFormats = (data) => {
 
   return Array.from(uniqueKeys);
 };
+
+export const booksByReadingLength = (data) => {
+  return data.map((book) => {
+    return {
+      title: book.title,
+      duration: dayjs(book.dateFinished).diff(book.dateStarted, "day") + 1,
+    };
+  });
+};
+
+export const averageReading = (data) => {
+  const totalDaysRead = booksByReadingLength(data)
+  const duration = totalDaysRead.reduce((acc, curr) => {
+      return acc + curr.duration;
+  }, 0);
+  return Math.round(duration / totalDaysRead.length)
+}
