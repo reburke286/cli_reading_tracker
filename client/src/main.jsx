@@ -18,7 +18,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Landing />,
+        element: <BooksByYear />,
       },
       {
         path: "/yearoveryear",
