@@ -18,7 +18,7 @@ export default function Highlights({ data }) {
         At a Glance
       </Typography>
       <Box display="flex" mt={3}>
-        <Typography sx={{ fontWeight: "bold", width: 150 }}>
+        <Typography sx={{ fontWeight: "bold", width: 180 }}>
           Total Books:
         </Typography>
         <Typography color={purple[900]} sx={{ fontWeight: "bold" }}>
@@ -26,15 +26,15 @@ export default function Highlights({ data }) {
         </Typography>
       </Box>
       <Box display="flex">
-        <Typography sx={{ fontWeight: "bold", width: 150 }}>
+        <Typography sx={{ fontWeight: "bold", width: 180 }}>
           Total Pages:
         </Typography>
         <Typography color={purple[900]}>{totalPageCount(data)}</Typography>
       </Box>
       <Box display="flex">
         <>
-          <Typography sx={{ fontWeight: "bold", width: 150 }}>
-            Favorite Authors:
+          <Typography sx={{ fontWeight: "bold", width: 180 }}>
+            Most Read Authors:
           </Typography>
         </>
         <Stack>
@@ -46,7 +46,7 @@ export default function Highlights({ data }) {
         </Stack>
       </Box>
       <Box display="flex">
-        <Typography sx={{ fontWeight: "bold", width: 150 }}>
+        <Typography sx={{ fontWeight: "bold", width: 180 }}>
           Average Read Length:
         </Typography>
         <Stack>
@@ -54,15 +54,7 @@ export default function Highlights({ data }) {
         </Stack>
       </Box>
       <Box display="flex">
-        <Typography sx={{ fontWeight: "bold", width: 150 }}>
-          Average Read Length:
-        </Typography>
-        <Stack>
-          <Typography color={purple[800]}>{`${averageReading(data)} days`}</Typography>
-        </Stack>
-      </Box>
-      <Box display="flex">
-        <Typography sx={{ fontWeight: "bold", width: 150 }}>
+        <Typography sx={{ fontWeight: "bold", width: 180 }}>
           Longest Read:
         </Typography>
         <Stack>
@@ -70,7 +62,7 @@ export default function Highlights({ data }) {
         </Stack>
       </Box>
       <Box display="flex">
-        <Typography sx={{ fontWeight: "bold", width: 150 }}>
+        <Typography sx={{ fontWeight: "bold", width: 180 }}>
           Shortest Read:
         </Typography>
         <Stack>

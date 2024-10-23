@@ -1,5 +1,6 @@
 const { Book, Author } = require("../models");
 const _ = require("lodash");
+const dayjs = require("dayjs");
 
 const bookController = {
   async getBooks(req, res) {
@@ -38,6 +39,7 @@ const bookController = {
     }
   },
   async createBook(req, res) {
+    console.log(req.body);
     //need to get the author
     let payload = {
       title: req.body.title,
@@ -46,7 +48,13 @@ const bookController = {
       yearPublished: req.body.yearPublished,
       readingDates: [
         {
-          dateStarted: req.body.dateStarted,
+          //just set the default to dateFinished - 5 days jfc
+          dateStarted:
+            req.body.dateStarted === "" && req.body.dateFinished
+              ? dayjs(req.body.dateFinished).subtract(1, "week")
+              : req.body.dateStarted === ""
+              ? dayjs()
+              : req.body.dateStarted,
           dateFinished: req.body.dateFinished,
         },
       ],
@@ -55,6 +63,7 @@ const bookController = {
       readingFormat: req.body.readingFormat,
       pageCount: req.body.pageCount,
     };
+    console.log(payload);
     try {
       const { _id } = await Author.findOne({ name: req.body.author });
       if (!_id) {

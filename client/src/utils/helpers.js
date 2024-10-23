@@ -257,18 +257,22 @@ export const findUniqueFormats = (data) => {
 };
 
 export const booksByReadingLength = (data) => {
-  return data.map((book) => {
-    return {
-      title: book.title,
-      duration: dayjs(book.dateFinished).diff(book.dateStarted, "day") + 1,
-    };
+  const books = [];
+  data.map((book) => {
+    if (book.dateStarted && book.dateFinished) {
+      books.push({
+        title: book.title,
+        duration: dayjs(book.dateFinished).diff(book.dateStarted, "day") + 1,
+      });
+    }
   });
+  return books;
 };
 
 export const averageReading = (data) => {
-  const totalDaysRead = booksByReadingLength(data)
+  const totalDaysRead = booksByReadingLength(data);
   const duration = totalDaysRead.reduce((acc, curr) => {
-      return acc + curr.duration;
+    return acc + curr.duration;
   }, 0);
-  return Math.round(duration / totalDaysRead.length)
-}
+  return Math.round(duration / totalDaysRead.length);
+};

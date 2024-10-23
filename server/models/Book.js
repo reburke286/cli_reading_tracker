@@ -28,7 +28,10 @@ const bookSchema = new Schema(
     },
     readingDates: [
       {
-        dateStarted: Date,
+        dateStarted: {
+          type: Date,
+          default: Date.now
+        },
         dateFinished: Date,
       },
     ],

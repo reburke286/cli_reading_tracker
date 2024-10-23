@@ -5,9 +5,6 @@ dayjs().format();
 const customParseFormat = require("dayjs/plugin/customParseFormat");
 dayjs.extend(customParseFormat);
 const fetch = require("node-fetch");
-// const {
-//   formatByMonth,
-// } = require("../../client/src/components/Charts/LineGraph/helpers");
 
 function init() {
   inquirer
@@ -31,8 +28,6 @@ function init() {
           addNewBook();
           break;
         default:
-          // formatByMonth(data)
-          // break;
           console.log("Latersss");
           process.exit();
       }
@@ -74,12 +69,12 @@ async function addNewBook() {
       type: "input",
       name: "dateStarted",
       message: "Date Started (YYYY-MM-DD)",
-      validate: (date) => {
-        if (isNaN(dayjs(date, "YYYY-MM-DD").$d)) {
-          return "Date should be formatted as YYYY-MM-DD";
-        } // strict parsing)
-        return true;
-      },
+      // validate: (date) => {
+      //   if (isNaN(dayjs(date, "YYYY-MM-DD").$d)) {
+      //     return "Date should be formatted as YYYY-MM-DD";
+      //   } // strict parsing)
+      //   return true;
+      // },
     },
     {
       type: "input",
