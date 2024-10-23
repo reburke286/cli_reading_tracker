@@ -51,7 +51,7 @@ const bookController = {
         },
       ],
       rating: req.body.rating,
-      reread: req.body.reread,
+      reread: req.body.isReread,
       readingFormat: req.body.readingFormat,
       pageCount: req.body.pageCount,
     };
@@ -64,7 +64,7 @@ const bookController = {
       }
       payload = { ...payload, authorId: _id };
       //first check if it's been read before
-      if (req.body.reread) {
+      if (req.body.isReread) {
         const book = await Book.findOne({ title: req.body.title });
         if (book) {
           const updatedBook = await Book.findOneAndUpdate(
