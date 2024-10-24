@@ -39,7 +39,6 @@ const bookController = {
     }
   },
   async createBook(req, res) {
-    console.log(req.body);
     //need to get the author
     let payload = {
       title: req.body.title,
@@ -63,7 +62,6 @@ const bookController = {
       readingFormat: req.body.readingFormat,
       pageCount: req.body.pageCount,
     };
-    console.log(payload);
     try {
       const { _id } = await Author.findOne({ name: req.body.author });
       if (!_id) {
