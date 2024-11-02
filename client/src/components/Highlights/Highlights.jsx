@@ -7,7 +7,7 @@ import {
   booksByReadingLength,
   averageReading,
 } from "../../utils/helpers";
-import _ from 'lodash'
+import _ from "lodash";
 
 export default function Highlights({ data }) {
   const topAuthors = booksByAuthor(data);
@@ -23,7 +23,14 @@ export default function Highlights({ data }) {
     (a, b) => a.yearPublished - b.yearPublished
   )[0];
   const oneStars = [...data].filter((book) => book.rating === 1);
-  const fiveStars = _.uniqBy([...data].filter((book) => book.rating === 5), 'title');
+  const fiveStars = _.uniqBy(
+    [...data].filter((book) => book.rating === 5),
+    "title"
+  );
+  const averageRating = (
+    data.reduce((acc, curr) => acc + curr.rating, 0) / data.length
+  ).toFixed(2);
+
   return (
     <Box>
       <Typography variant="h4" color={purple[800]}>
@@ -57,7 +64,7 @@ export default function Highlights({ data }) {
           ))}
         </Stack>
       </Box>
-      <Box display="flex">
+      <Box display="flex" mb={2}>
         <Typography sx={{ fontWeight: "bold", width: 180 }}>
           Average Read Length:
         </Typography>
@@ -80,7 +87,7 @@ export default function Highlights({ data }) {
           </Typography>
         </Stack>
       </Box>
-      <Box display="flex">
+      <Box display="flex" mb={2}>
         <Typography sx={{ fontWeight: "bold", width: 180 }}>
           Shortest Read:
         </Typography>
@@ -106,7 +113,7 @@ export default function Highlights({ data }) {
           </Typography>
         </Stack>
       </Box>
-      <Box display="flex">
+      <Box display="flex" mb={2}>
         <Typography sx={{ fontWeight: "bold", width: 180 }}>
           Shortest Book:
         </Typography>
@@ -130,6 +137,14 @@ export default function Highlights({ data }) {
               style={{ color: "black" }}
             >{` - ${oldestBook.yearPublished}`}</span>
           </Typography>
+        </Stack>
+      </Box>
+      <Box display="flex" mb={2}>
+        <Typography sx={{ fontWeight: "bold", width: 180 }}>
+          Average Rating:
+        </Typography>
+        <Stack>
+          <Typography color={purple[800]}>{averageRating}</Typography>
         </Stack>
       </Box>
       <Box display="flex">
